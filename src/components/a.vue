@@ -1,11 +1,17 @@
 <template>
   <div>
-    <a href="http://www.baidu.com">百度</a>
+    <div @click="link">百度</div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    link() {
+      window.location.href = "http://www.baidu.com";
+    },
+  },
+};
 </script>
 
 <style>
