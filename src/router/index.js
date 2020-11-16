@@ -12,7 +12,6 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  { path: '/login', component: Login },
   {
     path: '/about',
     name: 'About',
@@ -22,7 +21,8 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
-  }
+  },
+  { path: '/login', component: Login },
 ]
 
 const router = new VueRouter({

@@ -8,3 +8,17 @@ new Vue({
   router,
   render: function (h) { return h(App) }
 }).$mount('#app')
+
+
+const son = {}
+
+// Vue.component('son', {
+
+// })
+
+const father = {
+  template: '<son></son>',
+  components: {
+    son: son
+  }
+}
