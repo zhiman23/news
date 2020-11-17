@@ -2,6 +2,7 @@
   <div class="inputWrapper">
     <!-- :class="isOk ? '' : 'error'" -->
     <input
+      @blur="showErrMsg"
       :class="{
         error: !isOk,
       }"
@@ -22,10 +23,9 @@ export default {
     };
   },
   //子组件声明接收
-  props: ["placeholder", "type", "rule", "errMsg"],
+  props: ["placeholder", "type", "rule", "errMsg", "blur"],
   //监听(需求：每当输入数据发生变化，校验数据格式)
   watch: {
-    //第一种方法
     value(newValue) {
       //创建正则表达式
       if (this.rule.test(newValue)) {
@@ -38,14 +38,13 @@ export default {
     },
   },
 
-  // methods: {
-  //   //每当点击的时候做一个子传父
-  //   sendValue() {
-  //     // console.log(this.value);
-  //     //设定数据同时把数据传递出去
-  //     this.$emit("setValue", this.value);
-  //   },
-  // },
+  methods: {
+    showErrMsg() {
+      if (!this.isOk) {
+        alert(this.errMsg);
+      }
+    },
+  },
 };
 </script>
 

@@ -20,18 +20,18 @@
       type="password"
     />
 
-    <div class="btnSubmit">
-      <button>登录</button>
-    </div>
+    <Mybtn btnText="登录" />
   </div>
 </template>
 
 <script>
-import Myinput from "../components/Myinput.vue";
+import Myinput from "../components/Myinput";
+import Mybtn from "../components/Mybtn";
 
 export default {
   components: {
     Myinput,
+    Mybtn,
   },
 };
 </script>
@@ -50,20 +50,6 @@ export default {
   .iconfont {
     font-size: 126/360 * 100vw;
     color: #ff00dd;
-  }
-}
-.btnSubmit {
-  padding-top: 26/360 * 100vw;
-  button {
-    width: 100%;
-    // height: 48/360*100vw;
-    line-height: 48/360 * 100vw;
-    font-size: 18px;
-    background: linear-gradient(to right, #a3f6ef, #f6a1fd);
-    color: white;
-    border: none;
-    outline: none;
-    border-radius: 24/360 * 100vw;
   }
 }
 </style>
