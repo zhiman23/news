@@ -6,7 +6,6 @@ import login from '../views/login.vue'
 Vue.use(VueRouter)
 
 const routes = [
-
   { path: '/login', component: login },
 ]
 

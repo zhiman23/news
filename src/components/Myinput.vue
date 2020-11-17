@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <input type="text" v-model="value" :placeholder="tixing" />
-    <button @click="sendValue">提交给父组件</button>
+  <div class="inputWrapper">
+    <input :placeholder="placeholder" :type="type" v-model="value" />
   </div>
 </template>
 
@@ -14,18 +13,42 @@ export default {
     };
   },
   //子组件声明接收
-  props: ["tixing"],
-
-  methods: {
-    //每当点击的时候做一个子传父
-    sendValue() {
-      // console.log(this.value);
-      //设定数据同时把数据传递出去
-      this.$emit("setValue", this.value);
+  props: ["placeholder", "type", "rule"],
+  //监听(需求：每当输入数据发生变化，校验数据格式)
+  watch: {
+    //第一种方法
+    value(newValue) {
+      //创建正则表达式
+      if (this.rule.test(newValue)) {
+        console.log("合法");
+      } else {
+        console.log("不合法");
+      }
     },
   },
+
+  // methods: {
+  //   //每当点击的时候做一个子传父
+  //   sendValue() {
+  //     // console.log(this.value);
+  //     //设定数据同时把数据传递出去
+  //     this.$emit("setValue", this.value);
+  //   },
+  // },
 };
 </script>
 
-<style>
+<style lang="less">
+.inputWrapper {
+  padding-bottom: 16/360 * 100vw;
+  input {
+    width: 100%;
+    height: 48/360 * 100vw;
+    line-height: 48/360 * 100vw;
+    font-size: 18/360 * 100vw;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #333;
+  }
+}
 </style>
