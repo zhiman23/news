@@ -9,18 +9,24 @@
 
     <Myinput
       errMsg="请输入正确用户名"
-      :rule="/.{6}/"
+      :rule="/^.{6}$/"
       placeholder="用户名 / 手机号码"
       type="text"
     />
     <Myinput
-      errMsg="密码必须是6~12位的数字"
+      errMsg="请输入正确的昵称"
+      :rule="/^.{2,8}$/"
+      placeholder="请输入昵称"
+      type="text"
+    />
+    <Myinput
+      errMsg="请输入正确的密码"
       :rule="/^\d{6,12}$/"
       placeholder="请输入密码"
       type="password"
     />
 
-    <Mybtn btnText="登录" />
+    <Mybtn btnText="注册" />
   </div>
 </template>
 
@@ -36,7 +42,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .container {
   padding: 24/360 * 100vw;
 }
@@ -53,4 +59,3 @@ export default {
   }
 }
 </style>
-

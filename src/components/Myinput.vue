@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .inputWrapper {
   padding-bottom: 16/360 * 100vw;
   input {

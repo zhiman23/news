@@ -15,7 +15,7 @@ export default {
   height: 48/360 * 100vw;
   line-height: 48/360 * 100vw;
   text-align: center;
-  font-size: 18px;
+  font-size: 50px;
   background: linear-gradient(to right, #a3f6ef, #f6a1fd);
   color: white;
   border: none;
