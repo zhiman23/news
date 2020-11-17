@@ -1,6 +1,14 @@
 <template>
   <div class="inputWrapper">
-    <input :placeholder="placeholder" :type="type" v-model="value" />
+    <!-- :class="isOk ? '' : 'error'" -->
+    <input
+      :class="{
+        error: !isOk,
+      }"
+      :placeholder="placeholder"
+      :type="type"
+      v-model="value"
+    />
   </div>
 </template>
 
@@ -10,10 +18,11 @@ export default {
   data() {
     return {
       value: "",
+      isOk: true,
     };
   },
   //子组件声明接收
-  props: ["placeholder", "type", "rule"],
+  props: ["placeholder", "type", "rule", "errMsg"],
   //监听(需求：每当输入数据发生变化，校验数据格式)
   watch: {
     //第一种方法
@@ -21,8 +30,10 @@ export default {
       //创建正则表达式
       if (this.rule.test(newValue)) {
         console.log("合法");
+        this.isOk = true;
       } else {
-        console.log("不合法");
+        console.log(this.errMsg);
+        this.isOk = false;
       }
     },
   },
@@ -49,6 +60,9 @@ export default {
     border: none;
     outline: none;
     border-bottom: 1px solid #333;
+  }
+  .error {
+    border-color: red;
   }
 }
 </style>
