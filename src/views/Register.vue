@@ -9,24 +9,27 @@
 
     <Myinput
       errMsg="请输入正确用户名"
-      :rule="/^.{6}$/"
+      :rule="/^.{3,8}$/"
       placeholder="用户名 / 手机号码"
       type="text"
+      @setValue="setUsername"
     />
     <Myinput
       errMsg="请输入正确的昵称"
       :rule="/^.{2,8}$/"
       placeholder="请输入昵称"
       type="text"
+      @setValue="setNickname"
     />
     <Myinput
       errMsg="请输入正确的密码"
       :rule="/^\d{6,12}$/"
       placeholder="请输入密码"
       type="password"
+      @setValue="setPassword"
     />
 
-    <Mybtn btnText="注册" />
+    <Mybtn btnText="注册" @click.native="register()" />
   </div>
 </template>
 
@@ -38,6 +41,42 @@ export default {
   components: {
     Myinput,
     Mybtn,
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+      nickname: "",
+    };
+  },
+  methods: {
+    setUsername(newValue) {
+      this.username = newValue;
+    },
+    setNickname(newValue) {
+      this.nickname = newValue;
+    },
+    setPassword(newValue) {
+      this.password = newValue;
+    },
+    register() {
+      this.$axios({
+        url: "http://157.122.54.189:9083/register",
+        method: "post",
+        data: {
+          username: this.username,
+          password: this.password,
+          nickname: this.nickname,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.message == "注册成功") {
+          this.$toast.success("注册成功");
+        } else {
+          this.$toast.fail("注册失败");
+        }
+      });
+    },
   },
 };
 </script>
