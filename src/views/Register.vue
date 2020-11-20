@@ -72,6 +72,7 @@ export default {
         console.log(res.data);
         if (res.data.message == "注册成功") {
           this.$toast.success("注册成功");
+          this.$router.push("/login");
         } else {
           this.$toast.fail("注册失败");
         }

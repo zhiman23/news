@@ -16,7 +16,7 @@
     />
     <Myinput
       errMsg="密码必须是6~12位的数字"
-      :rule="/^\d{6,12}$/"
+      :rule="/^\d{3,12}$/"
       placeholder="请输入密码"
       type="password"
       @setValue="setPassword"
@@ -59,8 +59,16 @@ export default {
         },
       }).then((res) => {
         console.log(res.data);
-        if (res.data.message == "登录成功") {
+        const { message, data } = res.data;
+        if (message == "登录成功") {
           this.$toast.success("登录成功");
+
+          localStorage.setItem("token", data.token);
+          console.log("1");
+          localStorage.setItem("userId", data.user.id);
+          //（ 用户名：密码）iop:999999
+          // 跳转页面
+          this.$router.push("/User");
         } else {
           this.$toast.fail("登录失败");
         }
@@ -73,17 +81,17 @@ export default {
 <style lang="less" scoped>
 .container {
   padding: 24/360 * 100vw;
+  .logo {
+    text-align: center;
+    .iconfont {
+      font-size: 126/360 * 100vw;
+      color: #ff00dd;
+    }
+  }
 }
 .btnClose {
   .iconfont {
     font-size: 28/360 * 100vw;
-  }
-}
-.logo {
-  text-align: center;
-  .iconfont {
-    font-size: 126/360 * 100vw;
-    color: #ff00dd;
   }
 }
 </style>
