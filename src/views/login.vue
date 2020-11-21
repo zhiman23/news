@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="btnClose">
-      <span class="iconfont iconicon-test"></span>
+      <span class="iconfont iconicon-test" @click="$router.back()"></span>
     </div>
     <div class="logo">
       <span class="iconfont iconnew"></span>
@@ -51,7 +51,7 @@ export default {
 
     login() {
       this.$axios({
-        url: "http://157.122.54.189:9083/login",
+        url: "/login",
         method: "POST",
         data: {
           username: this.username,
@@ -69,8 +69,6 @@ export default {
           //（ 用户名：密码）iop:999999
           // 跳转页面
           this.$router.push("/User");
-        } else {
-          this.$toast.fail("登录失败");
         }
       });
     },

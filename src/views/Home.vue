@@ -4,6 +4,7 @@
     <router-link to="/login">登录</router-link><br />
     <router-link to="/Register">注册</router-link><br />
     <router-link to="/User">个人中心</router-link><br />
+    <router-link to="/Test">测试</router-link><br />
   </div>
 </template>
 

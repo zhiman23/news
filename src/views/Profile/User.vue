@@ -1,13 +1,13 @@
 <template>
   <div class="User">
-    <div class="header">
+    <div class="header" @click="$router.push('/edit')">
       <img
         v-if="userInfo.head_img"
-        :src="'http://157.122.54.189:9083' + userInfo.head_img"
+        :src="$axios.default.baseURL + userInfo.head_img"
         alt=""
         class="touxiang"
       />
-      <img v-else src="../assets/1.jpg" alt="" class="touxiang" />
+      <img v-else src="@/assets/1.jpg" alt="" class="touxiang" />
       <div class="info">
         <div class="name">
           <span
@@ -21,7 +21,7 @@
         </div>
         <div class="data">2000-06-27</div>
       </div>
-      <span class="iconfont iconjiantou1"></span>
+      <span class="iconfont iconjiantou1" @click="logout"></span>
     </div>
     <!-- 下 -->
     <Userbar
@@ -31,7 +31,7 @@
     />
     <Userbar label="我的跟帖" desc="跟帖/回复" />
     <Userbar label="我的收藏" desc="文章/视频" />
-    <Userbar label="设置" />
+    <Userbar label="设置" @click.native="$router.push('/edit')" />
     <Userbar label="退出" @click.native="logout" />
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
   },
   created() {
     this.$axios({
-      url: "http://157.122.54.189:9083/user/" + localStorage.getItem("userId"),
+      url: "/user/" + localStorage.getItem("userId"),
       headers: { Authorization: localStorage.getItem("token") },
     }).then((res) => {
       console.log(res.data);

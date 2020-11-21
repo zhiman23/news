@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="btnClose">
-      <span class="iconfont iconicon-test"></span>
+      <span class="iconfont iconicon-test" @click="$router.back()"></span>
     </div>
     <div class="logo">
       <span class="iconfont iconnew"></span>
@@ -61,7 +61,7 @@ export default {
     },
     register() {
       this.$axios({
-        url: "http://157.122.54.189:9083/register",
+        url: "/register",
         method: "post",
         data: {
           username: this.username,
