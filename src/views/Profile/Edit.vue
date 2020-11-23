@@ -10,15 +10,15 @@
       />
       <img v-else src="@/assets/1.jpg" alt="" class="touxiang" />
     </div>
-    <!-- <Userbar label="昵称" :desc="userInfo.nickname" /> -->
+    <!-- 昵称 -->
     <Userbar
       label="昵称"
       :desc="userInfo.nickname"
       @click.native="isShowNickname = true"
     />
-    <!-- <Userbar label="密码" desc="*****" /> -->
+    <!-- 密码 -->
     <Userbar label="密码" desc="******" @click.native="isShowPassword = true" />
-    <!-- <Userbar label="性别" :desc="userInfo.gender == 1 ? '小哥哥' : '小姐姐'" /> -->
+    <!-- 性别 -->
     <Userbar
       label="性别"
       :desc="userInfo.gender == 1 ? '小哥哥' : '小姐姐'"
@@ -71,7 +71,6 @@ export default {
       isShowGender: false,
       newNickname: "",
       newPassword: "",
-      value: "",
       newGender: [{ name: "男" }, { name: "女" }],
     };
   },
@@ -93,36 +92,27 @@ export default {
       });
     },
     setNickname() {
-      console.log(this.newNickname);
-      this.$axios({
-        method: "post",
-        url: "/user_update/" + localStorage.getItem("userId"),
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-        data: {
-          nickname: this.newNickname,
-        },
-      }).then((res) => {
-        console.log(res.data);
-
-        this.loadPage();
-      });
+      const data = {
+        nickname: this.newNickname,
+      };
+      this.tongyong(data);
     },
     passWord() {
-      console.log(this.newPassword);
+      const data = {
+        passWord: this.newPassword,
+      };
+      this.tongyong(data);
+    },
+    tongyong(data) {
       this.$axios({
         method: "post",
         url: "/user_update/" + localStorage.getItem("userId"),
         headers: {
           Authorization: localStorage.getItem("token"),
         },
-        data: {
-          password: this.newPassword,
-        },
+        data,
       }).then((res) => {
         console.log(res.data);
-
         this.loadPage();
       });
     },
