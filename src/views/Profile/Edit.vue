@@ -45,12 +45,10 @@
     <!-- 修改性别 -->
     <van-action-sheet
       v-model="isShowGender"
-      show-cancel-button
-      title="修改性别"
-      @confirm="Gender"
-    >
-      <van-field v-model="newGender" />
-    </van-action-sheet>
+      :actions="genderList"
+      @select="setGender"
+      cancel-text="取消"
+    />
   </div>
 </template>
 
@@ -71,7 +69,10 @@ export default {
       isShowGender: false,
       newNickname: "",
       newPassword: "",
-      newGender: [{ name: "男" }, { name: "女" }],
+      genderList: [
+        { name: "男", gender: 1 },
+        { name: "女", gender: 0 },
+      ],
     };
   },
   created() {
@@ -96,12 +97,23 @@ export default {
         nickname: this.newNickname,
       };
       this.tongyong(data);
+      //清空输入框的密码
+      this.newNickname = "";
     },
     passWord() {
       const data = {
         passWord: this.newPassword,
       };
       this.tongyong(data);
+      this.newPassword = "";
+    },
+    setGender(action) {
+      console.log(action);
+      const data = {
+        gender: action.gender,
+      };
+      this.tongyong(data);
+      this.isShowGender = false;
     },
     tongyong(data) {
       this.$axios({
@@ -113,22 +125,6 @@ export default {
         data,
       }).then((res) => {
         console.log(res.data);
-        this.loadPage();
-      });
-    },
-    Gender() {
-      this.$axios({
-        method: "post",
-        url: "/user_update/" + localStorage.getItem("userId"),
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-        data: {
-          gender: this.newGender,
-        },
-      }).then((res) => {
-        console.log(res.data);
-        Toast("取消");
         this.loadPage();
       });
     },

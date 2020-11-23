@@ -1,8 +1,12 @@
 <template>
   <div>
-    <van-dialog v-model="isShow" show-cancel-button title="修改用户名">
-      <van-field v-model="value" placeholder="请输入用户名" />
-    </van-dialog>
+    <button @click="show = true">弹出性别</button>
+    <van-action-sheet
+      v-model="show"
+      :actions="actions"
+      @select="onSelect"
+      cancel-text="取消"
+    />
   </div>
 </template>
 
@@ -10,9 +14,16 @@
 export default {
   data() {
     return {
-      isShow: true,
-      value: "",
+      show: false,
+      actions: [{ name: "男" }, { name: "女" }],
     };
+  },
+  methods: {
+    onSelect(action) {
+      console.log("选中");
+      console.log(action);
+      this.show = false;
+    },
   },
 };
 </script>
