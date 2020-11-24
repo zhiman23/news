@@ -6,7 +6,7 @@ import login from '../views/login.vue'
 import register from '../views/Register.vue'
 import user from '../views/Profile/User.vue'
 import edit from '../views/Profile/Edit.vue'
-
+import follow from '../views/Profile/Follow.vue'
 import Test from '../views/Test.vue'
 Vue.use(VueRouter)
 
@@ -14,9 +14,10 @@ const routes = [
   { path: '/', component: Home },
   { path: '/login', component: login },
   { path: '/Register', component: register },
-  { path: '/User', component: user },
-  { path: '/Edit', component: edit },
+  { path: '/User', component: user, meta: { needAuth: true } },
+  { path: '/Edit', component: edit, meta: { needAuth: true } },
   { path: '/Test', component: Test },
+  { path: '/Follow', component: follow, meta: { needAuth: true } },
 ]
 
 const router = new VueRouter({
@@ -24,11 +25,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/User') {
+  if (to.meta.needAuth) {
     if (localStorage.getItem('token')) {
       return next()
     } else {
-      return router.push('/login').catch((err) => { })
+      return router.push('/login').catch(err => { })
     }
   }
   return next()

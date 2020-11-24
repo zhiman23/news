@@ -16,6 +16,15 @@ import axios from "axios"
 
 axios.defaults.baseURL = "http://157.122.54.189:9083"
 
+//请求拦截，不管哪个页面，只要调用axios就会被拦截
+axios.interceptors.request.use(config => {
+  if (!config.headers.Authorization && localStorage.getItem('token')) {
+    config.headers.Authorization = localStorage.getItem("token")
+  }
+
+  return config
+})
+
 // 响应拦截器固定写法：
 axios.interceptors.response.use(res => {
   console.log('路过拦截器');

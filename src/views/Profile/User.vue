@@ -3,7 +3,7 @@
     <div class="header" @click="$router.push('/edit')">
       <img
         v-if="userInfo.head_img"
-        :src="$axios.default.baseURL + userInfo.head_img"
+        :src="$axios.defaults.baseURL + userInfo.head_img"
         alt=""
         class="touxiang"
       />
@@ -27,7 +27,7 @@
     <Userbar
       label="我的关注"
       desc="关注的用户"
-      @click.native="logText('跳转到关注页')"
+      @click.native="$router.push('/follow')"
     />
     <Userbar label="我的跟帖" desc="跟帖/回复" />
     <Userbar label="我的收藏" desc="文章/视频" />
@@ -51,12 +51,12 @@ export default {
   created() {
     this.$axios({
       url: "/user/" + localStorage.getItem("userId"),
-      headers: { Authorization: localStorage.getItem("token") },
     }).then((res) => {
       console.log(res.data);
       const { message, data } = res.data;
       if (message === "获取成功") {
         this.userInfo = data;
+        console.log(this.userInfo.head_img);
       }
     });
   },
@@ -85,6 +85,7 @@ export default {
       width: 70/360 * 100vw;
       height: 70/360 * 100vw;
       border-radius: 50%;
+      object-fit: cover;
     }
     .info {
       flex-grow: 1;

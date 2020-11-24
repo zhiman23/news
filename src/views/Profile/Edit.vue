@@ -2,13 +2,17 @@
   <div class="edit_wrapper">
     <TopNav title="编辑资料" />
     <div class="logo">
-      <img
-        v-if="userInfo.head_img"
-        :src="$axios.defaults.baseURL + userInfo.head_img"
-        alt=""
-        class="touxiang"
-      />
-      <img v-else src="@/assets/1.jpg" alt="" class="touxiang" />
+      <!-- 头像 -->
+
+      <van-uploader :after-read="afterRead">
+        <img
+          v-if="userInfo.head_img"
+          :src="$axios.defaults.baseURL + userInfo.head_img"
+          alt=""
+          class="touxiang"
+        />
+        <img v-else src="@/assets/1.jpg" alt="" class="touxiang" />
+      </van-uploader>
     </div>
     <!-- 昵称 -->
     <Userbar
@@ -79,12 +83,10 @@ export default {
     this.loadPage();
   },
   methods: {
+    // 渲染页面
     loadPage() {
       this.$axios({
         url: "/user/" + localStorage.getItem("userId"),
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
       }).then((res) => {
         const { data, message } = res.data;
         if (message == "获取成功") {
@@ -92,6 +94,7 @@ export default {
         }
       });
     },
+    //昵称
     setNickname() {
       const data = {
         nickname: this.newNickname,
@@ -100,6 +103,7 @@ export default {
       //清空输入框的密码
       this.newNickname = "";
     },
+    //密码
     passWord() {
       const data = {
         passWord: this.newPassword,
@@ -107,6 +111,7 @@ export default {
       this.tongyong(data);
       this.newPassword = "";
     },
+    //性别
     setGender(action) {
       console.log(action);
       const data = {
@@ -115,17 +120,41 @@ export default {
       this.tongyong(data);
       this.isShowGender = false;
     },
+    //封装请求
     tongyong(data) {
       this.$axios({
         method: "post",
         url: "/user_update/" + localStorage.getItem("userId"),
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
+
         data,
       }).then((res) => {
         console.log(res.data);
         this.loadPage();
+      });
+    },
+    afterRead(fileObj) {
+      console.log("文档读取后的回调");
+      console.log("可以拿到选中的文件对象");
+      console.log(fileObj);
+      //上传
+      const fd = new FormData();
+      fd.append("file", fileObj.file);
+
+      this.$axios({
+        method: "post",
+        url: "/upload",
+        data: fd,
+      }).then((res) => {
+        console.log(res.data);
+        const { message, data } = res.data;
+        if (message == "文件上传成功") {
+          console.log(data.url);
+          //上传图片获取回来的地址
+          const newData = {
+            head_img: data.url,
+          };
+          this.tongyong(newData);
+        }
       });
     },
   },
