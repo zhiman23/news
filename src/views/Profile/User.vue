@@ -1,5 +1,6 @@
 <template>
   <div class="User">
+    <TopNav title="个人中心" />
     <div class="header" @click="$router.push('/edit')">
       <img
         v-if="userInfo.head_img"
@@ -38,10 +39,11 @@
 
 <script>
 import Userbar from "@/components/Userbar";
-
+import TopNav from "@/components/TopNav";
 export default {
   components: {
     Userbar,
+    TopNav,
   },
   data() {
     return {
