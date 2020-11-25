@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    {{ active }}
     <HomeHeader />
 
     <van-tabs v-model="active">
@@ -9,11 +8,17 @@
         v-for="category in categoryList"
         :key="category.id"
       >
-        <Postitem
-          :postData="post"
-          v-for="post in category.postList"
-          :key="post.id"
-        />
+        <van-list
+          @load="loadMore"
+          :immediate-check="false"
+          v-model="category.loading"
+        >
+          <Postitem
+            :postData="post"
+            v-for="post in category.postList"
+            :key="post.id"
+          />
+        </van-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -69,6 +74,11 @@ export default {
         return {
           ...item,
           postList: [],
+          //每页都应该自己管理自己当前页面的页码和长度
+          pageIndex: 1,
+          pageSize: 6,
+          //初始化分类，让他不要重复发送请求
+          loading: false,
         };
       });
       this.bodyPost();
@@ -84,6 +94,11 @@ export default {
     //     this.bodyPost();
     //   });
     // },
+    loadMore() {
+      const currn = this.categoryList[this.active];
+      currn.pageIndex += 1;
+      this.bodyPost();
+    },
     bodyPost() {
       //当前激活索引
       const currn = this.categoryList[this.active];
@@ -93,6 +108,8 @@ export default {
         params: {
           //根据id发请求拿文章
           category: currn.id,
+          pageIndex: currn.pageIndex,
+          pageSize: currn.pageSize,
         },
       }).then((res) => {
         console.log(res);
