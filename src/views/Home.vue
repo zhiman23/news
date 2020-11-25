@@ -12,6 +12,8 @@
           @load="loadMore"
           :immediate-check="false"
           v-model="category.loading"
+          :finished="category.finished"
+          finished-text="我是有底线的"
         >
           <Postitem
             :postData="post"
@@ -79,6 +81,7 @@ export default {
           pageSize: 6,
           //初始化分类，让他不要重复发送请求
           loading: false,
+          finished: false,
         };
       });
       this.bodyPost();
@@ -113,8 +116,14 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        currn.postList = res.data.data;
-        // console.log(this.categoryList);
+        // currn.postList = res.data.data;
+
+        currn.postList = [...currn.postList, ...res.data.data];
+        console.log(this.categoryList);
+        currn.loading = false;
+        if (res.data.data.length < currn.pageSize) {
+          currn.finished = true;
+        }
       });
     },
   },
