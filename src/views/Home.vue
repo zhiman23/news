@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    {{ active }}
     <HomeHeader />
 
     <van-tabs v-model="active">
@@ -8,7 +9,11 @@
         v-for="category in categoryList"
         :key="category.id"
       >
-        <Postitem :postData="post" v-for="post in postList" :key="post.id" />
+        <Postitem
+          :postData="post"
+          v-for="post in category.postList"
+          :key="post.id"
+        />
       </van-tab>
     </van-tabs>
   </div>
@@ -26,7 +31,6 @@ export default {
     return {
       active: 1,
       categoryList: [],
-      postList: [],
     };
   },
   //当前分类列表是this.categoryList
@@ -34,7 +38,13 @@ export default {
   //监控激活索引
   watch: {
     active() {
-      this.bodyPost();
+      // this.bodyPost();
+      //切换分类会触发这个监听器
+      //当前栏目已有文章就不需要获取
+      const currn = this.categoryList[this.active];
+      if (currn.postList.length == 0) {
+        this.bodyPost();
+      }
     },
   },
   //打开界面就会看到的
@@ -43,8 +53,13 @@ export default {
     this.$axios({
       url: "/category",
     }).then((res) => {
-      console.log(res);
-      this.categoryList = res.data.data;
+      // console.log(res);
+      this.categoryList = res.data.data.map((item) => {
+        return {
+          ...item,
+          postList: [],
+        };
+      });
       this.bodyPost();
     });
   },
@@ -70,7 +85,8 @@ export default {
         },
       }).then((res) => {
         console.log(res);
-        this.postList = res.data.data;
+        currn.postList = res.data.data;
+        // console.log(this.categoryList);
       });
     },
   },
