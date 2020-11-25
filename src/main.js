@@ -27,7 +27,6 @@ axios.interceptors.request.use(config => {
 
 // 响应拦截器固定写法：
 axios.interceptors.response.use(res => {
-  console.log('路过拦截器');
   const errCodePattern = /^4\d{2}$/
   if (errCodePattern.test(res.data.statusCode)) {
     Toast.fail(res.data.message || '系统错误')

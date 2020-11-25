@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    {{ active }}
     <HomeHeader />
+
     <van-tabs v-model="active">
       <van-tab
         :title="category.name"
@@ -30,21 +32,10 @@ export default {
   },
   //当前分类列表是this.categoryList
   //当前激活分类的索引值是this.active
+  //监控激活索引
   watch: {
     active() {
-      //当前激活索引
-      const currn = this.categoryList[this.active];
-      //获取文章的方式
-      this.$axios({
-        url: "/post",
-        params: {
-          //根据id发请求拿文章
-          category: currn.id,
-        },
-      }).then((res) => {
-        console.log(res.data);
-        this.postList = res.data.data;
-      });
+      this.bodyPost();
     },
   },
   created() {
@@ -61,8 +52,15 @@ export default {
       });
     },
     bodyPost() {
+      //当前激活索引
+      const currn = this.categoryList[this.active];
+      //获取文章的方式
       this.$axios({
         url: "/post",
+        params: {
+          //根据id发请求拿文章
+          category: currn.id,
+        },
       }).then((res) => {
         console.log(res);
         this.postList = res.data.data;
