@@ -47,6 +47,16 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 
 
+//添加全局过滤器
+//传入两个参数，过滤器名和函数
+Vue.filter('fixImgUrl', (oldUrl) => {
+  if (oldUrl.indexOf("http") > -1) {
+    return oldUrl;
+  } else {
+    return axios.defaults.baseURL + oldUrl;
+  }
+})
+
 new Vue({
   router,
   render: function (h) { return h(App) }
