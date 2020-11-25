@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    {{ active }}
     <HomeHeader />
 
     <van-tabs v-model="active">
@@ -25,7 +24,7 @@ export default {
   },
   data() {
     return {
-      active: 0,
+      active: 1,
       categoryList: [],
       postList: [],
     };
@@ -38,19 +37,27 @@ export default {
       this.bodyPost();
     },
   },
+  //打开界面就会看到的
   created() {
-    this.header();
-    this.bodyPost();
+    // this.header();、
+    this.$axios({
+      url: "/category",
+    }).then((res) => {
+      console.log(res);
+      this.categoryList = res.data.data;
+      this.bodyPost();
+    });
   },
   methods: {
-    header() {
-      this.$axios({
-        url: "/category",
-      }).then((res) => {
-        console.log(res);
-        this.categoryList = res.data.data;
-      });
-    },
+    // header() {
+    //   this.$axios({
+    //     url: "/category",
+    //   }).then((res) => {
+    //     console.log(res);
+    //     this.categoryList = res.data.data;
+    //     this.bodyPost();
+    //   });
+    // },
     bodyPost() {
       //当前激活索引
       const currn = this.categoryList[this.active];
