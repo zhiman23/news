@@ -1,5 +1,5 @@
 <template>
-  <div class="allpost" @click="$router.push('/particular' + postData.id)">
+  <div class="allpost" @click="$router.push('/particular/' + postData.id)">
     <div
       class="singlePost"
       v-if="

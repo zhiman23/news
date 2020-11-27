@@ -1,11 +1,23 @@
 <template>
-  <div>详情页</div>
+  <div>
+    {{ postData.title }}
+  </div>
 </template>
 
 <script>
 export default {
-  mounted() {
-    console.log(this.$router.params.id);
+  data() {
+    return {
+      postData: {},
+    };
+  },
+  created() {
+    this.$axios({
+      url: "/post/" + this.$route.params.id,
+    }).then((res) => {
+      console.log(res.data);
+      this.postData = res.data.data;
+    });
   },
 };
 </script>

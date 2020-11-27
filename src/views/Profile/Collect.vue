@@ -21,7 +21,7 @@ export default {
   created() {
     //根据id，收藏文章
     // this.$axios({
-    //   url: "/post_star/1",
+    //   url: "/post_star/2",
     // }).then((res) => {
     //   console.log(res);
     // }),
