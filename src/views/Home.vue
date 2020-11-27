@@ -118,17 +118,19 @@ export default {
       }).then((res) => {
         console.log(res.data);
         // currn.postList = res.data.data;
-        //获取的数据进行拼接
-        currn.postList = [...currn.postList];
-        //请求已经发送完，并且数据拼接成功，告诉组件，当前分页流程已经结束
-        const newList = [];
-        currn.postList.forEach((element) => {
-          newList.push(element);
-        });
-        res.data.data.forEach((element) => {
-          newList.push(element);
-        });
-        currn.postList = newList;
+        //获取的数据进行拼接(两种方法，第一种)
+        currn.postList = [...currn.postList, ...res.data.data];
+        // console.log(currn.postList);
+        // //请求已经发送完，并且数据拼接成功，告诉组件，当前分页流程已经结束
+        //第二种
+        // const newList = [];
+        // currn.postList.forEach((element) => {
+        //   newList.push(element);
+        // });
+        // res.data.data.forEach((element) => {
+        //   newList.push(element);
+        // });
+        // currn.postList = newList;
         //加载完数据应该通知的组件，加载状态变为false可以继续后面的翻页
         currn.loading = false;
         if (res.data.data.length < currn.pageSize) {

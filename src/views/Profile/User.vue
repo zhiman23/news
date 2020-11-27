@@ -31,7 +31,11 @@
       @click.native="$router.push('/follow')"
     />
     <Userbar label="我的跟帖" desc="跟帖/回复" />
-    <Userbar label="我的收藏" desc="文章/视频" />
+    <Userbar
+      label="我的收藏"
+      desc="文章/视频"
+      @click.native="$router.push('/collect')"
+    />
     <Userbar label="设置" @click.native="$router.push('/edit')" />
     <Userbar label="退出" @click.native="logout" />
   </div>
