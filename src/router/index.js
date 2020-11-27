@@ -8,6 +8,7 @@ import user from '../views/Profile/User.vue'
 import edit from '../views/Profile/Edit.vue'
 import follow from '../views/Profile/Follow.vue'
 import collect from '../views/Profile/Collect.vue'
+import particular from '../views/Particular.vue'
 import Test from '../views/Test.vue'
 Vue.use(VueRouter)
 
@@ -19,6 +20,7 @@ const routes = [
   { path: '/Edit', component: edit, meta: { needAuth: true } },
   { path: '/Follow', component: follow, meta: { needAuth: true } },
   { path: '/Collect', component: collect, meta: { needAuth: true } },
+  { path: '/Particular/:id', component: particular },
   { path: '/Test', component: Test },
 
 ]
