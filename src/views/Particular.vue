@@ -8,9 +8,7 @@
           @click="handle"
           class="btnfollow"
           :class="{ unfollow: !postData.has_follow }"
-        >
-          {{ postData.has_follow ? "已关注" : "关注" }}
-        </div>
+        >{{ postData.has_follow ? "已关注" : "关注" }}</div>
       </div>
       <div class="headline">
         <div class="title">{{ postData.title }}</div>
@@ -26,24 +24,18 @@
         src="https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
       ></video>
       <div class="info">
-        <img src="@/assets/1.jpg" alt="" class="avatar" />
+        <img src="@/assets/1.jpg" alt class="avatar" />
         <div class="name">{{ postData.user.nickname }}</div>
         <div
           @click="handle"
           class="btnfollow"
           :class="{ unfollow: !postData.has_follow }"
-        >
-          {{ postData.has_follow ? "已关注" : "关注" }}
-        </div>
+        >{{ postData.has_follow ? "已关注" : "关注" }}</div>
       </div>
       <div class="title">{{ postData.title }}</div>
     </div>
     <div class="btns">
-      <div
-        @click="handleLike"
-        class="btn dianzan"
-        :class="{ hasLike: postData.has_like }"
-      >
+      <div @click="handleLike" class="btn dianzan" :class="{ hasLike: postData.has_like }">
         <span class="iconfont icondianzan"></span>
         {{ postData.like_length }}
       </div>
@@ -60,32 +52,42 @@ export default {
   data() {
     return {
       postData: {},
-      // user: {},
+      mes: {}
     };
   },
   created() {
     this.$axios({
-      url: "/post/" + this.$route.params.id,
-    }).then((res) => {
+      url: "/post/" + this.$route.params.id
+    }).then(res => {
       console.log(res.data);
       this.postData = res.data.data;
       // this.user = res.data.data.user;
     });
     this.$refs.def;
+    this.xinPage();
   },
   methods: {
+    xinPage() {
+      this.$axios({
+        url: "/post/" + this.$route.params.id
+      }).then(res => {
+        if (btnfollow == "关注成功") {
+          this.mes = res.data;
+        }
+      });
+    },
     //关注按钮
     handle() {
       if (this.postData.has_follow) {
         this.$axios({
-          url: "/user_unfollow/" + this.postData.user.id,
-        }).then((res) => {
+          url: "/user_unfollow/" + this.postData.user.id
+        }).then(res => {
           console.log(res.data);
         });
       } else {
         this.$axios({
-          url: "/user_follows/" + this.postData.user.id,
-        }).then((res) => {
+          url: "/user_follows/" + this.postData.user.id
+        }).then(res => {
           console.log(res.data);
         });
       }
@@ -93,8 +95,8 @@ export default {
     //点赞按钮
     handleLike() {
       this.$axios({
-        url: "/post_like/" + this.$route.params.id,
-      }).then((res) => {
+        url: "/post_like/" + this.$route.params.id
+      }).then(res => {
         console.log(res.data);
         if (res.data.message == "取消成功") {
           this.postData.has_like = false;
@@ -107,8 +109,8 @@ export default {
           this.$toast.success("点赞成功");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

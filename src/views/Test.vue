@@ -1,32 +1,33 @@
 <template>
-  <div>
-    <!-- 渲染组件 -->
-    <Postitem :postData="post" v-for="post in postList" :key="post.id" />
+  <div class="box">
+    <!-- v-for遍历 -->
+    <Main :commentData="comment" v-for="(comment,index) in commentList" :key="index" />
   </div>
 </template>
 
 <script>
-import Postitem from "../components/Postitem";
+import Main from "../components/Main";
 export default {
   components: {
-    Postitem,
+    Main
   },
   data() {
     return {
-      //存放文章列表的数组
-      postList: [],
+      commentList: [
+        {
+          content: "大鹏一日同风起",
+          parent: {
+            content: "扶摇直上九万里",
+            parent: { content: "这是第三条" }
+          }
+        },
+        { content: "当个咸鱼" },
+        { content: "快乐" }
+      ]
     };
-  },
-  created() {
-    this.$axios({
-      url: "/post",
-    }).then((res) => {
-      console.log(res.data.data);
-      this.postList = res.data.data;
-    });
-  },
+  }
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 </style>
