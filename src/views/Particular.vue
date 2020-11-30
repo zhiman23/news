@@ -44,14 +44,23 @@
         微信
       </div>
     </div>
+
+    <h2 class="commentTitle">精彩跟帖</h2>
+    <Main :commentData="comment" v-for="comment in commentList" :key="comment.id" />
   </div>
 </template>
 
 <script>
+import Main from "../components/Comment/Main";
+
 export default {
+  components: {
+    Main
+  },
   data() {
     return {
       postData: {},
+      commentList: [],
       mes: {}
     };
   },
@@ -64,18 +73,25 @@ export default {
       // this.user = res.data.data.user;
     });
     this.$refs.def;
-    this.xinPage();
+
+    this.$axios({
+      url: "/post_comment/" + this.$route.params.id
+    }).then(res => {
+      this.commentList = res.data.data;
+    });
+
+    // this.xinPage();
   },
   methods: {
-    xinPage() {
-      this.$axios({
-        url: "/post/" + this.$route.params.id
-      }).then(res => {
-        if (btnfollow == "关注成功") {
-          this.mes = res.data;
-        }
-      });
-    },
+    // xinPage() {
+    //   this.$axios({
+    //     url: "/post/" + this.postData.user.id
+    //   }).then(res => {
+    //     if (res.data == "关注成功") {
+    //       this.mes = res.data;
+    //     }
+    //   });
+    // },
     //关注按钮
     handle() {
       if (this.postData.has_follow) {
@@ -116,6 +132,12 @@ export default {
 
 <style lang="less" scoped>
 .part_wrapper {
+  .commentTitle {
+    text-align: center;
+    font-size: 26/360 * 100vw;
+    font-weight: 700;
+    padding: 20/360 * 100vw;
+  }
   .title {
     font-size: 16/360 * 100vw;
     color: #000000;
@@ -200,6 +222,7 @@ export default {
     display: flex;
     justify-content: space-evenly;
     padding: 20/360 * 100vw;
+    border-bottom: 4/360 * 100vw solid rgb(235, 231, 231);
     .btn {
       border: 1px solid #888;
       font-size: 14/360 * 100vw;
