@@ -45,13 +45,16 @@ export default {
   //当前激活分类的索引值是this.active
   //监控激活索引
   watch: {
-    active() {
+    active(newVal) {
       // this.bodyPost();
       //切换分类会触发这个监听器
       //当前栏目已有文章就不需要获取
-      const currn = this.categoryList[this.active];
-      if (currn.postList.length == 0) {
-        this.bodyPost();
+      if (newVal == this.categoryList.length - 1) {
+        this.$router.push("/manage");
+      } else {
+        if (this.currn.postList.length == 0) {
+          this.bodyPost();
+        }
       }
     },
   },
@@ -84,6 +87,9 @@ export default {
           loading: false,
           finished: false,
         };
+      });
+      this.categoryList.push({
+        name: "+",
       });
       this.bodyPost();
     });
@@ -143,4 +149,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/deep/ .van-tab:nth-last-child(2) {
+  background: #fff;
+  position: sticky;
+  right: -8px;
+  width: 44px;
+  line-height: 44px;
+}
 </style>

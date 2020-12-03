@@ -12,6 +12,7 @@ import collect from '../views/Profile/Collect.vue'
 import particular from '../views/Particular.vue'
 import morecomment from '../views/Morecomment.vue'
 import comment from '../views/Profile/Comment.vue'
+import manage from '../views/Manage.vue'
 import Test from '../views/Test.vue'
 Vue.use(VueRouter)
 
@@ -27,6 +28,7 @@ const routes = [
   { path: '/Particular/:id', component: particular },
   { path: '/Morecomment/:id', component: morecomment },
   { path: '/Comment', component: comment, meta: { needAuth: true } },
+  { path: '/Manage', component: manage },
   { path: '/Test', component: Test },
 
 ]

@@ -15,6 +15,7 @@ Vue.use(Toast);
 import axios from "axios"
 
 axios.defaults.baseURL = "http://157.122.54.189:9083"
+// axios.defaults.baseURL = "http://liangwei.tech:3000"
 
 //请求拦截，不管哪个页面，只要调用axios就会被拦截
 axios.interceptors.request.use(config => {
