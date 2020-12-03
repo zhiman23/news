@@ -30,7 +30,11 @@
       desc="关注的用户"
       @click.native="$router.push('/follow')"
     />
-    <Userbar label="我的跟帖" desc="跟帖/回复" />
+    <Userbar
+      label="我的跟帖"
+      desc="跟帖/回复"
+      @click.native="$router.push('/comment')"
+    />
     <Userbar
       label="我的收藏"
       desc="文章/视频"

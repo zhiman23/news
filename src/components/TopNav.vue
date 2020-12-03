@@ -24,5 +24,8 @@ export default {
     font-weight: bold;
     padding-right: 18/360 * 100vw;
   }
+  .iconfont {
+    font-size: 16/360 * 100vw;
+  }
 }
 </style>

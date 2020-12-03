@@ -4,16 +4,22 @@
     <div class="info">
       <div class="name">又是一个昵称</div>
       <div class="date">2 hours ago</div>
-      <div class="btn">回复</div>
+      <div class="btn" @click="sendComment">回复</div>
     </div>
-    <div class="content">{{parentData.content}}</div>
+    <div class="content">{{ parentData.content }}</div>
   </div>
 </template>
 
 <script>
+import evenBus from "../../utils/evenBus";
 export default {
   name: "Parent",
-  props: ["parentData"]
+  props: ["parentData"],
+  methods: {
+    sendComment() {
+      evenBus.$emit("sendMsg", this.parentData.id);
+    },
+  },
 };
 </script>
 

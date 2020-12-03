@@ -7,22 +7,28 @@
         <div class="name">这是昵称亚</div>
         <div class="date">2 mintues ago</div>
       </div>
-      <div class="btn">回复</div>
+      <div class="btn" @click="sendComment">回复</div>
     </div>
     <!-- parent子组件 -->
     <Parent :parentData="commentData.parent" v-if="commentData.parent" />
     <!-- 评论内容 -->
-    <div class="mainContent">{{commentData.content}}</div>
+    <div class="mainContent">{{ commentData.content }}</div>
   </div>
 </template>
 
 <script>
 import Parent from "./Parent";
+import evenBus from "../../utils/evenBus";
 export default {
   props: ["commentData"],
   components: {
-    Parent
-  }
+    Parent,
+  },
+  methods: {
+    sendComment() {
+      evenBus.$emit("sendMsg", this.commentData.id);
+    },
+  },
 };
 </script>
 

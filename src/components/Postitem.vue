@@ -15,20 +15,18 @@
           {{ postData.comment_length }}跟帖
         </div>
       </div>
-      <img :src="postData.cover[0].url | fixImgUrl" alt="" class="right" />
+      <img :src="postData.cover[0].url | fixImgUrl" alt class="right" />
     </div>
 
     <div
       class="threePost"
       v-if="postData.type == 1 && postData.cover.length >= 3"
     >
-      <div class="title">
-        {{ postData.title }}
-      </div>
+      <div class="title">{{ postData.title }}</div>
       <div class="coverWrapper">
-        <img :src="postData.cover[0].url | fixImgUrl" alt="" class="cover" />
-        <img :src="postData.cover[1].url | fixImgUrl" alt="" class="cover" />
-        <img :src="postData.cover[2].url | fixImgUrl" alt="" class="cover" />
+        <img :src="postData.cover[0].url | fixImgUrl" alt class="cover" />
+        <img :src="postData.cover[1].url | fixImgUrl" alt class="cover" />
+        <img :src="postData.cover[2].url | fixImgUrl" alt class="cover" />
       </div>
       <div class="info">
         {{ postData.user.nickname }} {{ postData.comment_length }} 跟帖
@@ -42,7 +40,8 @@
       <div class="title">{{ postData.title }}</div>
       <div class="play">
         <span class="iconfont iconshipin"></span>
-        <img :src="postData.cover[0].url | fixImgUrl" alt="" class="cover" />
+        <img :src="postData.cover[0].url | fixImgUrl" alt class="cover" />
+        <span class="iconfont iconshipin"></span>
       </div>
       <div class="info">
         {{ postData.user.nickname }} {{ postData.comment_length }} 跟帖
@@ -128,7 +127,7 @@ export default {
       .cover {
         width: 340/360 * 100vw;
         height: 170/360 * 100vw;
-        object-fit: contain;
+        object-fit: cover;
       }
     }
     .info {

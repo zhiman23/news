@@ -8,7 +8,9 @@
           @click="handle"
           class="btnfollow"
           :class="{ unfollow: !postData.has_follow }"
-        >{{ postData.has_follow ? "已关注" : "关注" }}</div>
+        >
+          {{ postData.has_follow ? "已关注" : "关注" }}
+        </div>
       </div>
       <div class="headline">
         <div class="title">{{ postData.title }}</div>
@@ -19,9 +21,9 @@
     <div class="video_post" v-if="postData.type == 2">
       <!-- 封面换图poster="" -->
       <video
-        ref="def"
+        :poster="postData.cover[0].url | fixImgUrl"
         controls
-        src="https://video.pearvideo.com/mp4/adshort/20200421/cont-1670293-15098199_adpkg-ad_hd.mp4"
+        :src="postData.content"
       ></video>
       <div class="info">
         <img src="@/assets/1.jpg" alt class="avatar" />
@@ -30,12 +32,18 @@
           @click="handle"
           class="btnfollow"
           :class="{ unfollow: !postData.has_follow }"
-        >{{ postData.has_follow ? "已关注" : "关注" }}</div>
+        >
+          {{ postData.has_follow ? "已关注" : "关注" }}
+        </div>
       </div>
       <div class="title">{{ postData.title }}</div>
     </div>
     <div class="btns">
-      <div @click="handleLike" class="btn dianzan" :class="{ hasLike: postData.has_like }">
+      <div
+        @click="handleLike"
+        class="btn dianzan"
+        :class="{ hasLike: postData.has_like }"
+      >
         <span class="iconfont icondianzan"></span>
         {{ postData.like_length }}
       </div>
@@ -46,73 +54,84 @@
     </div>
 
     <h2 class="commentTitle">精彩跟帖</h2>
-    <Main :commentData="comment" v-for="comment in commentList" :key="comment.id" />
+    <Main
+      :commentData="comment"
+      v-for="comment in commentList"
+      :key="comment.id"
+    />
+    <div
+      class="btnMorecomment"
+      @click="$router.push('/morecomment/' + $route.params.id)"
+    >
+      更多跟贴
+    </div>
+
+    <Commentinput @reloadComment="reloadComment" />
   </div>
 </template>
 
 <script>
 import Main from "../components/Comment/Main";
+import Commentinput from "../components/Comment/Commentinput";
 
 export default {
   components: {
-    Main
+    Main,
+    Commentinput,
   },
+  // inject: ["reload"],
   data() {
     return {
       postData: {},
       commentList: [],
-      mes: {}
     };
   },
   created() {
     this.$axios({
-      url: "/post/" + this.$route.params.id
-    }).then(res => {
+      url: "/post/" + this.$route.params.id,
+    }).then((res) => {
       console.log(res.data);
       this.postData = res.data.data;
       // this.user = res.data.data.user;
     });
     this.$refs.def;
 
-    this.$axios({
-      url: "/post_comment/" + this.$route.params.id
-    }).then(res => {
-      this.commentList = res.data.data;
-    });
-
-    // this.xinPage();
+    this.reloadComment();
   },
   methods: {
-    // xinPage() {
-    //   this.$axios({
-    //     url: "/post/" + this.postData.user.id
-    //   }).then(res => {
-    //     if (res.data == "关注成功") {
-    //       this.mes = res.data;
-    //     }
-    //   });
-    // },
+    reloadComment() {
+      this.$axios({
+        url: "post_comment/" + this.$route.params.id,
+      }).then((res) => {
+        if (res.data.data.length > 3) {
+          res.data.data.length = 3;
+        }
+        this.commentList = res.data.data;
+      });
+    },
     //关注按钮
     handle() {
       if (this.postData.has_follow) {
         this.$axios({
-          url: "/user_unfollow/" + this.postData.user.id
-        }).then(res => {
+          url: "/user_unfollow/" + this.postData.user.id,
+        }).then((res) => {
           console.log(res.data);
+          this.postData.has_follow = false;
         });
       } else {
         this.$axios({
-          url: "/user_follows/" + this.postData.user.id
-        }).then(res => {
+          url: "/user_follows/" + this.postData.user.id,
+        }).then((res) => {
           console.log(res.data);
+          this.postData.has_follow = true;
         });
       }
     },
     //点赞按钮
     handleLike() {
       this.$axios({
-        url: "/post_like/" + this.$route.params.id
-      }).then(res => {
+        url: "/post_like/" + this.$route.params.id,
+      }).then((res) => {
         console.log(res.data);
         if (res.data.message == "取消成功") {
           this.postData.has_like = false;
@@ -125,8 +144,8 @@ export default {
           this.$toast.success("点赞成功");
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -137,6 +156,17 @@ export default {
     font-size: 26/360 * 100vw;
     font-weight: 700;
     padding: 20/360 * 100vw;
+  }
+  .btnMorecomment {
+    font-size: 18/360 * 100vw;
+    border: 1px solid #888;
+    width: 121/360 * 100vw;
+    height: 30/360 * 100vw;
+    line-height: 30/360 * 100vw;
+    margin: 30/360 * 100vw auto;
+    text-align: center;
+    border-radius: 15/360 * 100vw;
+    margin-bottom: 100/360 * 100vw;
   }
   .title {
     font-size: 16/360 * 100vw;
