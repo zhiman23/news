@@ -50,6 +50,7 @@ export default {
   methods: {
     showTextarea() {
       this.isShowTextarea = true;
+      //延后
       this.$nextTick(() => {
         this.$refs.textDom.focus();
       });

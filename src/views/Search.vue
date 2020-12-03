@@ -12,7 +12,12 @@
     <div class="historyList" v-if="postList.length == 0">
       <h2>历史记录</h2>
       <div class="list">
-        <div class="item" v-for="(item, index) in history" :key="index">
+        <div
+          class="item"
+          @click="historySearch(item)"
+          v-for="(item, index) in history"
+          :key="index"
+        >
           {{ item }}
         </div>
       </div>
@@ -38,6 +43,7 @@ export default {
     };
   },
   created() {
+    //第二步，数据恢复
     if (localStorage.getItem("history")) {
       this.history = JSON.parse(localStorage.getItem("history"));
     }
@@ -48,11 +54,16 @@ export default {
         this.postList = [];
       }
     },
+    history() {
+      localStorage.setItem("history", JSON.stringify(this.history));
+    },
   },
-  history() {
-    localStorage.setItem("history", JSON.stringify(this.history));
-  },
+
   methods: {
+    historySearch(item) {
+      this.keyword = item;
+      this.handleSearch();
+    },
     handleSearch() {
       // 拿到当前的关键字, 发请求即可
       this.history.push(this.keyword);
@@ -104,6 +115,7 @@ export default {
     }
     input {
       width: 180 /360 * 100vw;
+      height: 100%;
       border: none;
       outline: none;
     }
