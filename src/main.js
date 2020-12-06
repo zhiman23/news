@@ -14,8 +14,8 @@ Vue.use(Toast);
 //axios
 import axios from "axios"
 
-axios.defaults.baseURL = "http://157.122.54.189:9083"
-// axios.defaults.baseURL = "http://liangwei.tech:3000"
+// axios.defaults.baseURL = "http://157.122.54.189:9083"
+axios.defaults.baseURL = "http://liangwei.tech:3000"
 
 //请求拦截，不管哪个页面，只要调用axios就会被拦截
 axios.interceptors.request.use(config => {
@@ -46,6 +46,28 @@ Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false
 
+//配置 vuex
+import Vuex from 'vuex'
+Vue.use(Vuex)
+//vuex--state
+const store = new Vuex.Store({
+  //state 是共享状态数据的对象
+  state: {
+    historyList: []
+  },
+  //mutations 是用来修改数据的函数对象
+  mutations: {
+    addHistory(state, data) {
+      if (state.historyList.indexOf(data) === -1) {
+        state.historyList.push(data)
+      }
+    },
+    recoverHistory(state, data) {
+      state.historyList = data
+    }
+  }
+})
+
 
 //添加全局过滤器
 //传入两个参数，过滤器名和函数
@@ -59,5 +81,6 @@ Vue.filter('fixImgUrl', (oldUrl) => {
 
 new Vue({
   router,
+  store,
   render: function (h) { return h(App) }
 }).$mount('#app')

@@ -39,6 +39,7 @@ export default {
     return {
       active: 1,
       categoryList: [],
+      postList: [],
     };
   },
   //当前分类列表是this.categoryList
@@ -52,7 +53,8 @@ export default {
       if (newVal == this.categoryList.length - 1) {
         this.$router.push("/manage");
       } else {
-        if (this.currn.postList.length == 0) {
+        const currn = this.categoryList[this.active];
+        if (currn.postList.length == 0) {
           this.bodyPost();
         }
       }
@@ -60,22 +62,14 @@ export default {
   },
   //打开界面就会看到的
   created() {
-    // this.header();、
-    this.$axios({
-      url: "/category",
-    }).then((res) => {
-      // console.log(res);
-      //数组map()的概念
-      // 1、map() 方法返回一个新数组，新数组中的元素为原始数组中的每个元素调用函数处理后得到的值。
-      // 2、map() 方法按照原始数组元素顺序依次处理元素。
-      // 注意： map() 不会对空数组进行检测。
-      // 注意： map() 不会改变原始数组。
-      // 注意：函数的作用是对数组中的每一个元素进行处理，返回新的元素。
-      // 3、语法
-      // map是数组的方法，有一个参数，参数是一个函数，函数中有3个参数
-      // 参数1：item必须。当前元素的值
-      // 参数2：index，可选。当前元素在数组中的索引值
-      // 参数3：arr可选。当前元素属于的数组对象
+    if (localStorage.getItem("activeList")) {
+      const res = {
+        data: {
+          data: JSON.parse(localStorage.getItem("activeList")),
+        },
+      };
+      console.log(res);
+
       this.categoryList = res.data.data.map((item) => {
         return {
           ...item,
@@ -92,18 +86,36 @@ export default {
         name: "+",
       });
       this.bodyPost();
-    });
+    } else {
+      this.$axios({
+        url: "/category",
+      }).then((res) => {
+        const maps = new Map();
+        this.categoryList = res.data.data.filter(
+          (a) => !maps.has(a.name) && maps.set(a.name, 1)
+        );
+        this.categoryList = res.data.data.map((item) => {
+          return {
+            ...item,
+            postList: [],
+            pageIndex: 1,
+            pageSize: 6,
+            loading: false,
+            finished: false,
+          };
+        });
+
+        this.categoryList.push({
+          name: "+",
+        });
+
+        console.log(this.categoryList);
+
+        this.bodyPost();
+      });
+    }
   },
   methods: {
-    // header() {
-    //   this.$axios({
-    //     url: "/category",
-    //   }).then((res) => {
-    //     console.log(res);
-    //     this.categoryList = res.data.data;
-    //     this.bodyPost();
-    //   });
-    // },
     loadMore() {
       const currn = this.categoryList[this.active];
       currn.pageIndex += 1;

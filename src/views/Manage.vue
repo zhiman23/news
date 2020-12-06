@@ -1,21 +1,30 @@
 <template>
   <div>
     <TopNav title="栏目管理" />
-    <div class="active">
+    <div class="activeList">
       <h2>点击删除以下频道</h2>
       <div class="list">
-        <div class="item">推荐</div>
-        <div class="item">热点</div>
-        <div class="item">娱乐</div>
-        <div class="item">科技</div>
-        <div class="item">汽车</div>
-        <div class="item">财经</div>
+        <div
+          class="item"
+          v-for="(item, index) in activeList"
+          @click="deactive(index)"
+          :key="item.id"
+        >
+          {{ item.name }}
+        </div>
       </div>
     </div>
-    <div class="deactive">
+    <div class="deactiveList">
       <h2>点击添加以下频道</h2>
       <div class="list">
-        <!-- <div class="item"></div> -->
+        <div
+          class="item"
+          v-for="(item, index) in deactiveList"
+          @click="active(index)"
+          :key="item.id"
+        >
+          {{ item.name }}
+        </div>
       </div>
     </div>
   </div>
@@ -33,13 +42,38 @@ export default {
       deactiveList: [],
     };
   },
+  watch: {
+    activeList() {
+      localStorage.setItem("activeList", JSON.stringify(this.activeList));
+    },
+    deactiveList() {
+      localStorage.setItem("deactiveList", JSON.stringify(this.deactiveList));
+    },
+  },
   created() {
-    this.$axios({
-      url: "category",
-    }).then((res) => {
-      console.log(res.data.data);
-      this.activeList = res.data.data;
-    });
+    if (localStorage.getItem("activeList")) {
+      this.activeList = JSON.parse(localStorage.getItem("activeList"));
+      if (localStorage.getItem("deactiveList")) {
+        this.deactiveList = JSON.parse(localStorage.getItem("deactiveList"));
+      }
+    } else {
+      this.$axios({
+        url: "category",
+      }).then((res) => {
+        this.activeList = res.data.data;
+      });
+    }
+  },
+  methods: {
+    //禁用一个分类，先放入禁用列表，再从激活列表中删除
+    deactive(index) {
+      this.deactiveList.push(this.activeList[index]);
+      this.activeList.splice(index, 1);
+    },
+    active(index) {
+      this.activeList.push(this.deactiveList[index]);
+      this.deactiveList.splice(index, 1);
+    },
   },
 };
 </script>

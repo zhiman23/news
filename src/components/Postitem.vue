@@ -93,10 +93,13 @@ export default {
     .coverWrapper {
       display: flex;
       justify-content: space-between;
-      margin: 10/360 * 100vw;
+      // margin: 10/360 * 100vw;
       .cover {
-        width: 112/360 * 100vw;
+        // flex: 1;
+        width: 32%;
         height: 74/360 * 100vw;
+        // padding: 2/360 * 100vw;
+        margin: 2/360 * 100vw;
         object-fit: cover;
       }
     }

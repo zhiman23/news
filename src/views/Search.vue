@@ -15,7 +15,7 @@
         <div
           class="item"
           @click="historySearch(item)"
-          v-for="(item, index) in history"
+          v-for="(item, index) in $store.state.historyList"
           :key="index"
         >
           {{ item }}
@@ -45,7 +45,8 @@ export default {
   created() {
     //第二步，数据恢复
     if (localStorage.getItem("history")) {
-      this.history = JSON.parse(localStorage.getItem("history"));
+      const oldHistory = JSON.parse(localStorage.getItem("history"));
+      this.$store.commit("recoverHistory", oldHistory);
     }
   },
   watch: {
@@ -54,8 +55,11 @@ export default {
         this.postList = [];
       }
     },
-    history() {
-      localStorage.setItem("history", JSON.stringify(this.history));
+    "$store.state.historyList": function () {
+      localStorage.setItem(
+        "history",
+        JSON.stringify(this.$store.state.historyList)
+      );
     },
   },
 
@@ -66,7 +70,7 @@ export default {
     },
     handleSearch() {
       // 拿到当前的关键字, 发请求即可
-      this.history.push(this.keyword);
+      this.$store.commit("addHistory", this.keyword);
       this.$axios({
         url: "post_search",
         params: {
@@ -131,6 +135,7 @@ export default {
   }
   .list {
     display: flex;
+    flex-wrap: wrap;
     .item {
       padding: 10 /360 * 100vw;
       padding-left: 0;

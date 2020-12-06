@@ -1,6 +1,7 @@
 <template>
   <div class="homeheader">
-    <span class="iconfont iconnew" @click="$router.push('/')"></span>
+    <!-- @click="$router.push('/')" -->
+    <span class="iconfont iconnew"></span>
     <div class="search" @click="$router.push('/search')">
       <span class="iconfont iconsearch"></span>
       <span class="searchText">搜索新闻</span>
